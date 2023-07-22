@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+    />
+  </head>
+  <body>
+    <header class="flex justify-between m-12">
+      <button
+        class="border-2 border-gray-200 px-2 py-1 hover:border-gray-900"
+        id="newStory"
+      >
+        <a href="index.html">Home</a>
+      </button>
+      <button
+        class="border-2 border-gray-200 px-2 py-1 hover:border-gray-900"
+        id="bookmarkButton"
+      >
+      <a href="bookmark.html">Bookmarks</a>
+      </button>
+    </header>
+
+    <div class="myEditor mx-36">
+      <div class="textEditor-header flex justify-center mb-8">
+        <input
+          type="text"
+          id="textTitle"
+          placeholder="Title"
+          class="text-black w-2/5 min-h-9 h-auto text-4xl outline-none placeholder:text-gray-600"
+        />
+      </div>
+      <hr class="mb-8">
+      <div class="editor min-h-full p-8" id="editor"></div>
+
+      <p class="flex justify-center text-red-400" id="warningMessage">
+        You haven't finished your essay
+      </p>
+      <p class="flex justify-center text-green-400" id="sucessMessage">
+        Congrats you published your essay
+      </p>
+
+    </div>
+    <hr class="mt-8 mx-36">
+      <button id="touch" class="mx-36 my-16">TOUCH</button>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+      const warningMessage = document.getElementById("warningMessage");
+      const sucessMessage = document.getElementById("sucessMessage");
+
+      warningMessage.style.display = "none";
+      sucessMessage.style.display = "none";
+
+      var editor = new Quill("#editor", {
+        theme: "snow",
+      });
+
+      window.addEventListener("load", function () {
+        editor.focus();
+      });
+
+      const title = document.getElementById("textTitle");
+
+      document.getElementById("touch").addEventListener("click", function () {
+        var content = editor.getContents();
+        var titleValue = title.value;
+
+        if (content.ops.length === 0 || titleValue.trim().length === 0) {
+          warningMessage.style.display = "block";
+          warningMessage.classList.add("flex", "justify-center");
+          sucessMessage.style.display = "none"
+        } else {
+          warningMessage.style.display = "none";
+
+          const myobj = {
+            title: titleValue,
+            description: getContentWithFormatting(),
+            bookmarked: false,
+          };
+
+          function getContentWithFormatting() {
+            const delta = editor.getContents();
+            const tempQuill = new Quill(document.createElement("div"));
+            tempQuill.setContents(delta);
+
+            return tempQuill.root.innerHTML;
+          }
+
+          fetch("http://localhost:3000/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(myobj),
+          }).then((response) => {
+            if (response.ok) {
+              return response.json();
+            }
+          });
+
+          title.value = ""
+          editor.setText(""); 
+          sucessMessage.style.display = "block"
+
+
+
+        }
+      });
+
+      // const touch = document.getElementById("touch");
+      // touch.addEventListener("click",function(){
+      //   var content = editor.getText();
+      //   console.log(content);
+      // });
+    </script>
+  </body>
+</html>

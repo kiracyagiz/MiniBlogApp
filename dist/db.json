@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "title": "MY First Assay",
+      "description": "Lorem ipsum dolor ",
+      "bookmarked": false
+    },
+    {
+      "id": 2,
+      "title": "MY Second Assay",
+      "description": "Lorem ipsum dolor ",
+      "bookmarked": true
+    },
+    {
+      "id": 3,
+      "title": "MY Third Essay",
+      "description": "Lorem ipsum dolor ",
+      "bookmarked": true
+    }
+  ]
+}

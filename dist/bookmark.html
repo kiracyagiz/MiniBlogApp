@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header class="flex justify-between m-12">
+      <button
+        class="border-2 border-gray-200 px-2 py-1 hover:border-gray-900"
+        id="newStory"
+      >
+        <a href="index.html">Home</a>
+      </button>
+      <button
+        class="border-2 border-gray-200 px-2 py-1 hover:border-gray-900"
+        id="bookmarkButton"
+      >
+        <a href="bookmark.html">Bookmarks</a>
+      </button>
+    </header>
+
+    <div class="container">
+      <h1 class="mt-10 flex justify-center text-3xl font-bold">
+        Your Bookmarks
+      </h1>
+      <hr class="mx-72 mt-4" />
+
+      <div class="bookmarks ml-72 mt-20" id="bookmarks"></div>
+    </div>
+
+    <script>
+      fetch("http://localhost:3000/users")
+        .then((response) => response.json())
+        .then((myData) => {
+          myData.forEach((item) => {
+            if (item.bookmarked === true) {
+              let myDiv = document.createElement("div");
+              let h1 = document.createElement("h1");
+              let p = document.createElement("p");
+              let bookMarks = document.getElementById("bookmarks");
+
+              h1.classList.add("text-2xl", "font-bold");
+              p.classList.add("text-lg");
+              myDiv.classList.add("mt-20","mb-20");
+
+              h1.textContent = item.title;
+              p.innerHTML = item.description;
+              if (p.textContent.length > 50) {
+                p.textContent = p.textContent.slice(0, 90);
+              }
+              myDiv.appendChild(h1);
+              myDiv.appendChild(p);
+              bookMarks.appendChild(myDiv);
+            }
+          });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "apideneme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve-json": "json-server --watch ./dist/db.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^10.4.14",
+    "json-server": "^0.17.3",
+    "postcss": "^8.4.24"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.3.2"
+  }
+}

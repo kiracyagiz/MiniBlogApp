@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="output.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body >
+
+    <header class="flex justify-between m-12">
+        <button class="border-2 border-gray-200 px-2 py-1  hover:border-gray-900" id="newStory"><a href="index.html">Home</a></button>
+        <button class="border-2 border-gray-200 px-2 py-1 hover:border-gray-900" id="bookmarkButton" ><a href="essay.html">Write New Story</a></button>
+        
+    </header>
+
+    <div class="myDiv flex justify-center m-24 " id="myDiv">
+    </div>
+
+    <div class="mySecondDiv flex justify-center m-24" id="mySecondDiv">
+
+    </div>
+
+
+    
+
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const encodedData = urlParams.get('post');
+        const myData = JSON.parse(decodeURIComponent(encodedData));
+
+        fetch(`http://localhost:3000/users/${myData}`)
+        .then(response => response.json())
+        .then(data =>{
+            console.log(data.title);
+
+            let h1  = document.createElement("h1");
+            let div = document.createElement("div");
+            const myDiv = document.getElementById("myDiv");
+            const secondDiv = document.getElementById("mySecondDiv");
+
+            h1.innerHTML = data.title;
+
+            h1.classList.add("text-4xl","text-bold")
+
+            let p = document.createElement("p");
+
+            p.innerHTML = data.description;
+
+            myDiv.appendChild(h1);
+            secondDiv.appendChild(p);
+            
+            
+            
+        })
+    </script>
+
+</body>
+</html>
