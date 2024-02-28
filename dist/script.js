@@ -1,4 +1,24 @@
 document.addEventListener("DOMContentLoaded", function (e) {
+  const searchBar = document.getElementById("searchBar");
+  const cards = document.getElementById("cards");
+  const bookMark = document.getElementById("bookMarks");
+
+  searchBar.addEventListener("input", function () {
+    const searchTerm = searchBar.value.toLowerCase();
+    filterEssays(searchTerm);
+  });
+
+  function filterEssays(searchTerm) {
+    const allEssays = document.querySelectorAll(".parentDiv");
+    allEssays.forEach((essay) => {
+      const title = essay.querySelector("h1").textContent.toLowerCase();
+      const description = essay.querySelector("p").textContent.toLowerCase();
+      const isVisible =
+        title.includes(searchTerm) || description.includes(searchTerm);
+      essay.style.display = isVisible ? "block" : "none";
+    });
+  }
+
   fetch("http://localhost:3000/users")
     .then((response) => response.json())
     .then((data) => {
@@ -10,10 +30,11 @@ document.addEventListener("DOMContentLoaded", function (e) {
         const secondDiv = document.createElement("div");
         const h1 = document.createElement("h1");
         const p = document.createElement("p");
+        const secondP = document.createElement("p");
         const button = document.createElement("button");
         const buttonSecond = document.createElement("button");
-        buttonSecond.id = "secondButton";
-        const bookMark = document.getElementById("bookMarks");
+      
+
 
         //PARENT DIV
         div.className = "parentDiv";
@@ -23,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
         h1.innerHTML = item.title;
         h1.classList.add("font-bold", "text-3xl", "mb-3");
         p.innerHTML = item.description;
+        secondP.innerHTML = item.timestamp
 
         if (p.textContent.length > 50) {
           p.textContent = p.textContent.slice(0, 50) + "...";
@@ -64,6 +86,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
 
         div.appendChild(h1);
         div.appendChild(p);
+        div.appendChild(secondP);
         div.append(secondDiv);
 
         cards.appendChild(div);
